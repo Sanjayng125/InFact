@@ -3,6 +3,7 @@ import { Noto_Sans, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "sonner";
+import QueryProvider from "@/providers/QueryProvider";
 
 const playfairDisplayHeading = Playfair_Display({
   subsets: ["latin"],
@@ -29,8 +30,8 @@ export default function RootLayout({
             (notoSans.variable, playfairDisplayHeading.variable)
           } antialiased`}
         >
-          {children}
-          <Toaster />
+          <QueryProvider>{children}</QueryProvider>
+          <Toaster richColors position="top-right" />
         </body>
       </html>
     </ClerkProvider>
