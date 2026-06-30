@@ -6,6 +6,8 @@ AI-powered fact-checking SaaS that verifies claims from text, URLs, images, and 
 
 inFact lets a user paste a claim, share a URL, or upload a screenshot/video, and returns a verdict (`true` / `false` / `misleading` / `unverified`) for each claim found, backed by cited sources. The core of the project is a raw agentic loop built directly on Gemini's function calling, with no framework abstraction — the agent decides what to search, when to search again, and when it has enough evidence to form a verdict.
 
+<img width="1901" height="865" alt="Screenshot 2026-06-30 170917" src="https://github.com/user-attachments/assets/9be0e456-e83e-4d46-99e6-02c7b3c85141" />
+
 ## How it works
 
 1. Input is normalized to text — typed claims are used directly, URLs are extracted via Tavily, images are read with Gemini vision, and videos are transcribed with Gemini's native audio understanding.
