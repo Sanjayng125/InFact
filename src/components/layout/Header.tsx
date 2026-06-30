@@ -42,7 +42,9 @@ function Header() {
               </Link>
             )}
 
-            <UserButton />
+            <div className="rounded-full border-2 border-accent flex items-center justify-center">
+              <UserButton />
+            </div>
           </Show>
         </div>
       </div>

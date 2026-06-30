@@ -88,6 +88,7 @@ export default function InputPanel({ loading, onSubmit }: InputPanelProps) {
             placeholder="Paste a claim, paragraph, or article text..."
             rows={8}
             className="w-full bg-background border border-border-custom rounded-lg px-3 py-3 text-sm text-primary placeholder:text-subtle resize-none focus:outline-none focus:border-accent/50 transition-colors"
+            disabled={loading}
           />
         )}
 
@@ -99,6 +100,7 @@ export default function InputPanel({ loading, onSubmit }: InputPanelProps) {
               onChange={(e) => setUrlInput(e.target.value)}
               placeholder="https://example.com/article"
               className="w-full bg-background border border-border-custom rounded-lg px-3 py-3 text-sm text-primary placeholder:text-subtle focus:outline-none focus:border-accent/50 transition-colors"
+              disabled={loading}
             />
             <p className="text-xs text-muted">
               inFact will extract the article content and verify the key claims.
@@ -112,6 +114,7 @@ export default function InputPanel({ loading, onSubmit }: InputPanelProps) {
               <button
                 onClick={() => fileInputRef.current?.click()}
                 className="w-full h-36 rounded-lg border border-dashed border-border-custom hover:border-accent/40 transition-colors flex flex-col items-center justify-center gap-2 text-muted hover:text-primary"
+                disabled={loading}
               >
                 <Upload size={20} />
                 <span className="text-xs font-mono">
@@ -153,6 +156,7 @@ export default function InputPanel({ loading, onSubmit }: InputPanelProps) {
               }
               onChange={(e) => setFile(e.target.files?.[0] ?? null)}
               className="hidden"
+              disabled={loading}
             />
           </div>
         )}

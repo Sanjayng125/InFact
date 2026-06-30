@@ -26,7 +26,8 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   title: "InFact",
-  description: "AI-powered fact checking - check if it's in-fact true or false",
+  description:
+    "AI-powered fact checking app - check if it's in-fact true or false",
 };
 
 export default function RootLayout({

@@ -42,9 +42,9 @@ export default function DashboardPage() {
           )}
         </div>
 
-        {isLoading && (
+        {(isLoading || isFetching) && (
           <div className="space-y-3">
-            {[...Array(3)].map((_, i) => (
+            {[...Array(5)].map((_, i) => (
               <div
                 key={i}
                 className="h-24 rounded-xl bg-surface border border-border-custom animate-pulse"
@@ -62,7 +62,7 @@ export default function DashboardPage() {
           </div>
         )}
 
-        {!isLoading && !isError && checks?.length === 0 && (
+        {!isLoading && !isFetching && !isError && checks?.length === 0 && (
           <div className="h-64 flex flex-col items-center justify-center text-center rounded-xl border border-dashed border-border-custom">
             <History size={32} className="text-subtle mb-3" />
             <p className="text-sm font-mono text-muted">No checks yet</p>
@@ -79,23 +79,27 @@ export default function DashboardPage() {
           </div>
         )}
 
-        {!isLoading && !isError && checks && checks.length > 0 && (
-          <>
-            <div className="space-y-3">
-              {checks.map((check) => (
-                <HistoryCard key={check.id} check={check} />
-              ))}
-            </div>
+        {!isLoading &&
+          !isFetching &&
+          !isError &&
+          checks &&
+          checks.length > 0 && (
+            <>
+              <div className="space-y-3">
+                {checks.map((check) => (
+                  <HistoryCard key={check.id} check={check} />
+                ))}
+              </div>
 
-            <PaginationControls
-              currentPage={currentPage}
-              page={page}
-              setPage={setPage}
-              totalPages={totalPages}
-              disabled={isLoading || isFetching}
-            />
-          </>
-        )}
+              <PaginationControls
+                currentPage={currentPage}
+                page={page}
+                setPage={setPage}
+                totalPages={totalPages}
+                disabled={isLoading || isFetching}
+              />
+            </>
+          )}
       </main>
     </div>
   );
