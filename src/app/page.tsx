@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 import VerdictBadge from "@/components/fact-check/VerdictBadge";
 import ConfidenceBar from "@/components/fact-check/ConfidenceBar";
-import { DEMO_CLAIMS, PRICING } from "@/lib/constants";
+import { DEMO_CLAIMS, PLANS } from "@/lib/constants";
 
 const FEATURES = [
   {
@@ -162,7 +162,7 @@ export default function LandingPage() {
             Simple, transparent pricing.
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-2xl">
-            {PRICING.map((plan, i) => (
+            {Object.entries(PLANS).map(([planName, plan], i) => (
               <div
                 key={i}
                 className={`rounded-xl p-6 border ${

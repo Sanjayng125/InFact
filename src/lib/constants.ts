@@ -1,12 +1,14 @@
+import { Plan } from "@/types";
+
 export const MAX_IMAGE_SIZE = 5 * 1024 * 1024;
 export const MAX_VIDEO_SIZE = 45 * 1024 * 1024;
 export const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"];
 export const ALLOWED_VIDEO_TYPES = ["video/mp4", "video/webm", "video/quicktime"];
 
-export const PRICING = [
-    {
+export const PLANS: { free: Plan; pro: Plan } = {
+    free: {
         name: "Free",
-        price: "$0",
+        price: "₹0",
         period: "forever",
         features: [
             "5 fact-checks per day",
@@ -15,12 +17,12 @@ export const PRICING = [
             "Source citations",
         ],
         cta: "Get started free",
-        href: "/sign-up",
+        href: "/check",
         highlighted: false,
     },
-    {
+    pro: {
         name: "Pro",
-        price: "$9",
+        price: "₹899",
         period: "per month",
         features: [
             "50 fact-checks per day",
@@ -30,10 +32,10 @@ export const PRICING = [
             "Full check history",
         ],
         cta: "Upgrade to Pro",
-        href: "/sign-up",
+        href: "/check",
         highlighted: true,
-    },
-];
+    }
+}
 
 export const DEMO_CLAIMS = [
     {

@@ -6,6 +6,7 @@ CREATE TABLE users (
   image_url TEXT,
   is_pro BOOLEAN DEFAULT FALSE,
   credits INTEGER DEFAULT 5,
+  plan_expires_at TIMESTAMPTZ,
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );

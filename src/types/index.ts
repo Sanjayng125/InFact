@@ -40,3 +40,13 @@ export interface ExtractUrlArgs {
     urls: string[];
     query?: string;
 }
+
+export interface Plan {
+    name: string;
+    price: string;
+    period: string;
+    features: string[];
+    cta: string;
+    href: string;
+    highlighted: boolean;
+}

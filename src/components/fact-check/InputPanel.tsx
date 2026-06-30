@@ -11,6 +11,7 @@ import {
   Loader2,
 } from "lucide-react";
 import { InputType } from "@/types";
+import { Button } from "../ui/button";
 
 const TABS: { type: InputType; label: string; icon: React.ElementType }[] = [
   { type: "text", label: "Text", icon: FileText },
@@ -156,10 +157,10 @@ export default function InputPanel({ loading, onSubmit }: InputPanelProps) {
           </div>
         )}
 
-        <button
+        <Button
           onClick={handleSubmit}
           disabled={loading}
-          className="w-full py-2.5 rounded-lg text-sm font-mono font-medium bg-accent text-background hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+          className="w-full rounded-lg font-mono bg-accent text-background"
         >
           {loading ? (
             <>
@@ -169,7 +170,7 @@ export default function InputPanel({ loading, onSubmit }: InputPanelProps) {
           ) : (
             "Fact-check"
           )}
-        </button>
+        </Button>
       </div>
     </div>
   );
