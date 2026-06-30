@@ -6,11 +6,7 @@ import { checkUsageLimit } from "@/lib/redis/usage";
 import { uploadToStorage, getSignedUrl } from "@/lib/storage";
 import { transcribeVideo, extractTextFromImage } from "@/lib/transcribe";
 import { NextRequest } from "next/server";
-
-const MAX_IMAGE_SIZE = 5 * 1024 * 1024;
-const MAX_VIDEO_SIZE = 45 * 1024 * 1024;
-const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"];
-const ALLOWED_VIDEO_TYPES = ["video/mp4", "video/webm", "video/quicktime"];
+import { MAX_IMAGE_SIZE, MAX_VIDEO_SIZE, ALLOWED_IMAGE_TYPES, ALLOWED_VIDEO_TYPES } from "@/lib/constants";
 
 export async function POST(req: NextRequest) {
     try {
@@ -23,7 +19,7 @@ export async function POST(req: NextRequest) {
 
         const { data: user, error: userError } = await supabase
             .from("users")
-            .select("id, is_pro")
+            .select("id, is_pro, credits")
             .eq("id", userId)
             .single();
 
@@ -41,6 +37,7 @@ export async function POST(req: NextRequest) {
 
         const { allowed, remaining, resetIn } = await checkUsageLimit(
             userId,
+            user.credits,
             user.is_pro
         );
         if (!allowed) {
@@ -49,7 +46,7 @@ export async function POST(req: NextRequest) {
                     error: `Daily limit reached. Resets in ${Math.ceil(resetIn / 3600)} hours.`,
                     upgradeRequired: !user.is_pro,
                 },
-                { status: 429 }
+                { status: 401 }
             );
         }
 
@@ -66,6 +63,7 @@ export async function POST(req: NextRequest) {
 
         let agentInput = "";
         let fileUrl: string | null = null;
+        let extractedContent: string | null = null;
 
         if (inputType === "text") {
             if (!rawInput?.trim()) {
@@ -103,11 +101,11 @@ export async function POST(req: NextRequest) {
             fileUrl = await getSignedUrl(filePath);
 
             const buffer = await file.arrayBuffer();
-            const extractedContent = isVideo
+            extractedContent = isVideo
                 ? await transcribeVideo(buffer, file.type)
                 : await extractTextFromImage(buffer, file.type);
 
-            if (!extractedContent?.trim()) {
+            if (!extractedContent || !extractedContent?.trim()) {
                 return Response.json(
                     {
                         error: `Could not extract content from the ${inputType}. Please try a clearer ${isImage ? "image with visible text" : "video with clear audio"}.`,
@@ -122,14 +120,16 @@ export async function POST(req: NextRequest) {
             return Response.json({ error: "Invalid inputType" }, { status: 400 });
         }
 
+        const result = await runFactCheckAgent(agentInput);
+
         const { data: check, error: checkError } = await supabase
             .from("checks")
             .insert({
                 user_id: userId,
                 input_type: inputType,
                 raw_input: rawInput ?? null,
+                extracted_content: extractedContent ?? null,
                 file_url: fileUrl,
-                status: "processing",
             })
             .select()
             .single();
@@ -137,8 +137,6 @@ export async function POST(req: NextRequest) {
         if (checkError || !check) {
             return Response.json({ error: "Failed to create check" }, { status: 500 });
         }
-
-        const result = await runFactCheckAgent(agentInput);
 
         for (const claim of result.claims) {
             const { data: claimRow, error: claimError } = await supabase
@@ -166,11 +164,6 @@ export async function POST(req: NextRequest) {
                 );
             }
         }
-
-        await supabase
-            .from("checks")
-            .update({ status: "completed" })
-            .eq("id", check.id);
 
         return Response.json({
             checkId: check.id,

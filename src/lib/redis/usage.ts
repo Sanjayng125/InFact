@@ -1,14 +1,10 @@
 import { redis } from "./redis";
 
-const FREE_CHECKS_PER_DAY = 5;
-const PRO_CHECKS_PER_DAY = 50;
-
-export async function checkUsageLimit(userId: string, isPro: boolean): Promise<{
+export async function checkUsageLimit(userId: string, limit: number, isPro: boolean): Promise<{
     allowed: boolean;
     remaining: number;
     resetIn: number;
 }> {
-    const limit = isPro ? PRO_CHECKS_PER_DAY : FREE_CHECKS_PER_DAY;
     const key = `infact:usage:${userId}:${new Date().toISOString().split("T")[0]}`;
 
     const current = await redis.incr(key);

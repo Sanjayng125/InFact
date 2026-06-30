@@ -117,14 +117,37 @@
   --sidebar-ring: oklch(0.547 0.021 43.1);
 }
 
+@theme {
+  --color-background: #0A0A0A;
+  --color-surface: #1A1A1A;
+  --color-border-custom: #2A2A2A;
+  --color-accent: #A3E635;
+  --color-primary: #F5F5F5;
+  --color-muted: #717171;
+  --color-subtle: #3F3F3F;
+
+  --font-syne: var(--font-syne);
+  --font-inter: var(--font-inter);
+  --font-mono: var(--font-mono);
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-primary font-inter;
   }
+
   html {
     @apply font-sans;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-mono;
   }
 }

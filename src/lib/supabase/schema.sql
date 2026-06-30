@@ -17,7 +17,7 @@ CREATE TABLE checks (
   input_type TEXT NOT NULL CHECK (input_type IN ('text', 'url', 'image', 'video')),
   raw_input TEXT,
   file_url TEXT,
-  status TEXT NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'processing', 'completed', 'failed')),
+  extracted_content TEXT,
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 

@@ -1,16 +1,28 @@
 import type { Metadata } from "next";
-import { Noto_Sans, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "sonner";
 import QueryProvider from "@/providers/QueryProvider";
+import { Syne, Inter, JetBrains_Mono } from "next/font/google";
+import Header from "@/components/layout/Header";
+import UsageProvider from "@/providers/UsageProvider";
 
-const playfairDisplayHeading = Playfair_Display({
+const syne = Syne({
   subsets: ["latin"],
-  variable: "--font-heading",
+  variable: "--font-syne",
+  weight: ["400", "600", "700", "800"],
 });
 
-const notoSans = Noto_Sans({ subsets: ["latin"], variable: "--font-sans" });
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-mono",
+  weight: ["400", "500"],
+});
 
 export const metadata: Metadata = {
   title: "InFact",
@@ -23,14 +35,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider>
+    <ClerkProvider afterSignOutUrl={"/sign-in"}>
       <html lang="en">
         <body
-          className={`${
-            (notoSans.variable, playfairDisplayHeading.variable)
-          } antialiased`}
+          className={`${syne.variable} ${inter.variable} ${jetbrainsMono.variable} antialiased`}
         >
-          <QueryProvider>{children}</QueryProvider>
+          <QueryProvider>
+            <UsageProvider>
+              <Header />
+              {children}
+            </UsageProvider>
+          </QueryProvider>
           <Toaster richColors position="top-right" />
         </body>
       </html>
