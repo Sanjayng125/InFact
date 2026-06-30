@@ -8,13 +8,6 @@ export const factCheckRateLimit = new Ratelimit({
     analytics: true,
 });
 
-export const uploadRateLimit = new Ratelimit({
-    redis,
-    limiter: Ratelimit.slidingWindow(5, "60s"),
-    prefix: "infact:upload",
-    analytics: true,
-});
-
 export const checkoutRateLimit = new Ratelimit({
     redis,
     limiter: Ratelimit.slidingWindow(1, "10s"),
